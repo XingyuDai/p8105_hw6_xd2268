@@ -119,7 +119,7 @@ bal_logistic %>%
     OR = exp(estimate),
     conf_low = exp(estimate - 1.96 * std.error),
     conf_high = exp(estimate + 1.96 * std.error)) %>%
-  select(term, Log_OR = estimate, OR, conf_low, conf_high) %>% 
+  select(term, Log_OR = estimate, OR, conf_low, conf_high, p.value) %>% 
   filter(term == "victim_sexMale") %>% 
   knitr::kable(digits = 3)
 ```
