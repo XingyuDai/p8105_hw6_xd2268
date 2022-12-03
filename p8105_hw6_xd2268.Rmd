@@ -109,18 +109,19 @@ baltimore_df =
 
 bal_logistic = 
   baltimore_df %>% 
-  glm(solved ~ victim_age + victim_sex + victim_race, data = ., family = binomial()) 
+  glm(solved ~ victim_age + victim_sex + victim_race, data = ., family = binomial()) %>% 
+  broom::tidy()
 
-summary(bal_logistic)
+bal_logistic
 
 bal_logistic %>% 
-  broom::tidy() %>% 
   mutate(
     OR = exp(estimate),
     conf_low = exp(estimate - 1.96 * std.error),
     conf_high = exp(estimate + 1.96 * std.error)) %>%
-  select(term, estimate, OR, conf_low, conf_high) %>% 
+  select(term, Log_OR = estimate, OR, conf_low, conf_high) %>% 
+  filter(term == "victim_sexMale") %>% 
   knitr::kable(digits = 3)
 ```
 
-The output of `glm` was saved as `bal_logistic`.
+The output of `glm` was saved as `bal_logistic`. As shown in the output, for solving homicides comparing male victims to female victims keeping all other variables fixed, the estimate adjusted OR is 0.426, and confidence interval of the adjusted OR is (0.325, 0.558).
