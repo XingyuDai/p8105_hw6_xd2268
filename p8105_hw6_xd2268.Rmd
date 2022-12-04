@@ -191,5 +191,16 @@ According to this plot, NYC has the lowest estimated adjusted OR for solving hom
 
 ### Problem 3
 
+Load and clean the data for regression analysis (i.e. convert numeric to factor where appropriate, check for missing data, etc.).
+
+```{r}
+birthweight = read_csv("./data/birthweight.csv") %>% 
+  mutate(
+    babysex = factor(babysex, levels=c(1, 2), labels = c('Male','Female')),
+    frace = factor(frace, levels=c(1, 2, 3, 4, 8, 9), labels = c('White','Black','Asian','Puerto Rican','Other','Unknown')),
+    malform = factor(malform, levels=c(0, 1), labels = c('absent','present')),
+    mrace = factor(mrace, levels=c(1, 2, 3, 4, 8), labels = c('White','Black','Asian','Puerto Rican','Other'))
+  )
+```
 
 
