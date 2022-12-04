@@ -224,7 +224,11 @@ lmodel_a = lm(bwt ~ blength, data = birthweight)
 
 lmodel_a %>% 
   broom::tidy()
+```
 
+Show the proposed model within a plot:
+
+```{r}
 birthweight %>% 
   add_predictions(lmodel_a) %>% 
   ggplot(aes(x = blength, y = bwt)) + 
