@@ -201,6 +201,11 @@ birthweight = read_csv("./data/birthweight.csv") %>%
     malform = factor(malform, levels=c(0, 1), labels = c('absent','present')),
     mrace = factor(mrace, levels=c(1, 2, 3, 4, 8), labels = c('White','Black','Asian','Puerto Rican','Other'))
   )
+
+birthweight %>% drop_na()
 ```
+
+Four categorical variables `babysex`, `frace`, `malform`, and `mrace` are converted to factor. And the number of rows is always why 4342 whether `drop_na` works or not. We can tell there is no missing value in this dataset.
+
 
 
