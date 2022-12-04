@@ -186,7 +186,7 @@ cities_logistic %>%
   )
 ```
 
-According to this plot, NYC has the lowest estimated adjusted OR for solving homicides comparing male victims to female victims, and Albuquerque has the highest. the mahority of cities have ORs that are lower than 1, while a lot of then have CIs crossing the null value 1.
+According to this plot, NYC has the lowest estimated adjusted OR for solving homicides comparing male victims to female victims, and Albuquerque has the highest. The majority of cities have ORs that are lower than 1, while a lot of them have CIs crossing the null value 1.
 
 
 ### Problem 3
