@@ -205,7 +205,7 @@ birthweight = read_csv("./data/birthweight.csv") %>%
 birthweight %>% drop_na()
 ```
 
-Four categorical variables `babysex`, `frace`, `malform`, and `mrace` are converted to factor. And the number of rows is always why 4342 whether `drop_na` works or not. We can tell there is no missing value in this dataset.
+Four numeric variables `babysex`, `frace`, `malform`, and `mrace` are converted to factor variables as needed. And the number of rows is always why 4342 whether `drop_na` works or not. We can tell there is no missing value in this dataset.
 
 * Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. Describe your modeling process and show a plot of model residuals against fitted values – use `add_predictions` and `add_residuals` in making this plot.
 
