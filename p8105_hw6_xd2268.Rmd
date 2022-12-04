@@ -209,7 +209,7 @@ Four numeric variables `babysex`, `frace`, `malform`, and `mrace` are converted 
 
 * Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. Describe your modeling process and show a plot of model residuals against fitted values – use `add_predictions` and `add_residuals` in making this plot.
 
-We are interested in the association between baby’s length at birth and baby birth weight and hypothesize that birthweight will increase as baby's length increases. Firstly, check the sctterplot between these two:
+We are interested in the association between baby’s length at birth and baby birth weight and hypothesize that birthweight will increase as baby's length increases. Firstly, check the scatterplot between these two:
 
 ```{r}
 birthweight %>% 
@@ -217,7 +217,7 @@ birthweight %>%
   geom_point(alpha = .3)
 ```
 
-We a tell an approximately linear relationship between length and weight. Then, try to build a linear regression model:
+We can tell an approximately linear relationship between length and weight. Then, try to build a linear regression model:
 
 ```{r}
 lmodel_a = lm(bwt ~ blength, data = birthweight)
