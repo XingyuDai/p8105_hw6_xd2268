@@ -222,6 +222,9 @@ We a tell an approximately linear relationship between length and weight. Then, 
 ```{r}
 lmodel_a = lm(bwt ~ blength, data = birthweight)
 
+lmodel_a %>% 
+  broom::tidy()
+
 birthweight %>% 
   add_predictions(lmodel_a) %>% 
   ggplot(aes(x = blength, y = bwt)) + 
@@ -246,3 +249,22 @@ birthweight %>%
 
 The plot implies heteroscedasticity problem -- it seems the residuals and the fitted values are correlated.
 
+Compare your model to two others:
+
+* One using length at birth and gestational age as predictors (main effects only).
+
+```{r}
+lmodel_b = lm(bwt ~ blength + gaweeks, data = birthweight)
+
+lmodel_b %>% 
+  broom::tidy()
+```
+
+* One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
+
+```{r}
+lmodel_c = lm(bwt ~ bhead * blength * babysex, data = birthweight)
+
+lmodel_c %>% 
+  broom::tidy()
+```
