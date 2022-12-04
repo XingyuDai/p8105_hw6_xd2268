@@ -191,7 +191,7 @@ According to this plot, NYC has the lowest estimated adjusted OR for solving hom
 
 ### Problem 3
 
-Load and clean the data for regression analysis (i.e. convert numeric to factor where appropriate, check for missing data, etc.).
+* Load and clean the data for regression analysis (i.e. convert numeric to factor where appropriate, check for missing data, etc.).
 
 ```{r}
 birthweight = read_csv("./data/birthweight.csv") %>% 
@@ -207,5 +207,42 @@ birthweight %>% drop_na()
 
 Four categorical variables `babysex`, `frace`, `malform`, and `mrace` are converted to factor. And the number of rows is always why 4342 whether `drop_na` works or not. We can tell there is no missing value in this dataset.
 
+* Propose a regression model for birthweight. This model may be based on a hypothesized structure for the factors that underly birthweight, on a data-driven model-building process, or a combination of the two. Describe your modeling process and show a plot of model residuals against fitted values – use `add_predictions` and `add_residuals` in making this plot.
 
+We are interested in the association between baby’s length at birth and baby birth weight. Firstly, make a sctterplot between these two:
+
+```{r}
+birthweight %>% 
+  ggplot(aes(x = blength, y = bwt)) + 
+  geom_point(alpha = .3)
+```
+
+We a tell an approximately linear relationship between length and weight. Then, try to build a linear regression model:
+
+```{r}
+lmodel_a = lm(bwt ~ blength, data = birthweight)
+
+birthweight %>% 
+  add_predictions(lmodel_a) %>% 
+  ggplot(aes(x = blength, y = bwt)) + 
+  geom_point(alpha = .3) + 
+  geom_line(aes(y = pred), color = "red")
+```
+
+Show a plot of model residuals against fitted values:
+
+```{r}
+birthweight %>% 
+  add_predictions(lmodel_a) %>% 
+  add_residuals(lmodel_a) %>% 
+  ggplot(aes(x = pred, y = resid)) + 
+  geom_point(alpha = .3) +
+  labs(
+    title = "Plot of Model Residuals against Fitted Values",
+    x = "Fitted Value",
+    y = "Residual"
+  )
+```
+
+The plot implies heteroscedasticity problem -- it seems the residuals and the fitted values are correlated.
 
