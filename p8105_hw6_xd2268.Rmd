@@ -249,9 +249,9 @@ birthweight %>%
 
 The plot implies heteroscedasticity problem -- it seems the residuals and the fitted values are correlated.
 
-Compare your model to two others:
+* Compare your model to two others:
 
-* One using length at birth and gestational age as predictors (main effects only).
+One using length at birth and gestational age as predictors (main effects only).
 
 ```{r}
 lmodel_b = lm(bwt ~ blength + gaweeks, data = birthweight)
@@ -260,7 +260,7 @@ lmodel_b %>%
   broom::tidy()
 ```
 
-* One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
+One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
 
 ```{r}
 lmodel_c = lm(bwt ~ bhead * blength * babysex, data = birthweight)
@@ -268,3 +268,49 @@ lmodel_c = lm(bwt ~ bhead * blength * babysex, data = birthweight)
 lmodel_c %>% 
   broom::tidy()
 ```
+
+* Make this comparison in terms of the cross-validated prediction error; use `crossv_mc` and functions in `purrr` as appropriate.
+
+```{r}
+cv_df = 
+  crossv_mc(birthweight, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble),
+  )
+  
+cv_df = 
+  cv_df %>% 
+  mutate(
+    lmodel_a_fits = map(.x = train, ~lm(bwt ~ blength, data = .x)),
+    lmodel_b_fits = map(.x = train, ~lm(bwt ~ blength + gaweeks, data = .x)),
+    lmodel_c_fits = map(.x = train, ~lm(bwt ~ bhead * blength * babysex, data = .x))
+  ) %>% 
+  mutate(
+    rmse_a_lm = map2_dbl(.x = lmodel_a_fits, .y = test, ~rmse(model = .x, data = .y)),
+    rmse_b_lm = map2_dbl(.x = lmodel_b_fits, .y = test, ~rmse(model = .x, data = .y)),
+    rmse_c_lm = map2_dbl(.x = lmodel_c_fits, .y = test, ~rmse(model = .x, data = .y))
+  )
+```
+
+Look at the results by making box plots:
+
+```{r}
+cv_df %>% 
+  select(starts_with("rmse")) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model",
+    values_to = "rmse",
+    names_prefix = "rmse_"
+  ) %>% 
+  ggplot(aes(x = model, y = rmse)) +
+  geom_boxplot() +
+  labs(
+    title = "Box Plots of RMSEs for Three Model",
+    x = "Model",
+    y = "RMSE"
+  )
+```
+
+According to the result, obviously, the third model (one using head circumference, length, sex, and all interactions) has the smallest RMSE.
